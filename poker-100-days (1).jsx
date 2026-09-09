@@ -144,6 +144,7 @@ export default function PokerPlan() {
   const completedCount = completedDays.length;
   const progressPct = Math.round((completedCount / 100) * 100);
   const currentPhaseData = phases.find(p => p.id === selectedPhase);
+  const focusPhase = phases[selectedPhase === 0 ? 0 : selectedPhase - 1] || phases[0];
 
   if (selectedDay !== null && view === "detail") {
     const day = allDays.find(d => d.day === selectedDay);
@@ -153,50 +154,53 @@ export default function PokerPlan() {
     const nextDay = selectedDay < 100 ? selectedDay + 1 : null;
 
     return (
-      <div style={{ minHeight: "100vh", background: "#0a0a0a", color: "#e8e0d0", fontFamily: "'Georgia', serif", padding: "24px 16px" }}>
-        <div style={{ maxWidth: 640, margin: "0 auto" }}>
-          <button onClick={() => { setView("grid"); setSelectedDay(null); }} style={{ background: "none", border: "1px solid #333", color: "#888", padding: "8px 16px", cursor: "pointer", borderRadius: 4, marginBottom: 24, fontFamily: "inherit", fontSize: 13 }}>
-            ← Kembali ke Daftar
+      <div style={{ minHeight: "100vh", background: "radial-gradient(circle at top, #10192d 0%, #060b12 42%, #05050a 100%)", color: "#edf2ff", fontFamily: "Inter, 'Segoe UI', sans-serif", padding: "24px 16px" }}>
+        <div style={{ maxWidth: 760, margin: "0 auto" }}>
+          <button
+            onClick={() => { setView("grid"); setSelectedDay(null); }}
+            style={{ background: "rgba(15, 23, 42, 0.85)", border: "1px solid rgba(148, 163, 184, 0.25)", color: "#dfe7ff", padding: "10px 18px", cursor: "pointer", borderRadius: 999, marginBottom: 22, fontFamily: "inherit", fontSize: 13, boxShadow: "0 8px 24px rgba(15, 23, 42, 0.25)", transition: "all 0.2s ease" }}
+          >
+            ← Kembali ke daftar
           </button>
 
-          <div style={{ border: `1px solid ${phase.color}33`, borderRadius: 8, overflow: "hidden" }}>
-            <div style={{ background: `${phase.color}15`, borderBottom: `1px solid ${phase.color}33`, padding: "20px 24px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div style={{ border: `1px solid ${phase.color}44`, borderRadius: 22, overflow: "hidden", background: "rgba(10, 14, 22, 0.9)", boxShadow: "0 20px 40px rgba(2, 6, 23, 0.5)" }}>
+            <div style={{ background: `linear-gradient(135deg, ${phase.color}20, rgba(10, 14, 22, 0.8))`, borderBottom: `1px solid ${phase.color}33`, padding: "22px 24px 20px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
                 <div>
-                  <div style={{ fontSize: 11, color: phase.color, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8 }}>
+                  <div style={{ fontSize: 11, color: phase.color, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>
                     Phase {day.phase}: {phase.name} · Hari {day.day}
                   </div>
-                  <h1 style={{ margin: 0, fontSize: 22, fontWeight: "normal", color: "#f0e8d8", lineHeight: 1.3 }}>{day.title}</h1>
+                  <h1 style={{ margin: 0, fontSize: 26, lineHeight: 1.3, color: "#f8fafc", fontWeight: 700 }}>{day.title}</h1>
                 </div>
-                <span style={{ background: categoryColors[day.category] + "25", color: categoryColors[day.category], border: `1px solid ${categoryColors[day.category]}44`, padding: "4px 10px", borderRadius: 20, fontSize: 11, whiteSpace: "nowrap", marginLeft: 12 }}>
+                <span style={{ background: `${categoryColors[day.category]}22`, color: categoryColors[day.category], border: `1px solid ${categoryColors[day.category]}55`, padding: "7px 12px", borderRadius: 999, fontSize: 11, whiteSpace: "nowrap", fontWeight: 700 }}>
                   {day.category}
                 </span>
               </div>
             </div>
 
             <div style={{ padding: "24px" }}>
-              <div style={{ display: "flex", gap: 16, marginBottom: 24 }}>
-                <div style={{ background: "#141414", border: "1px solid #222", borderRadius: 6, padding: "10px 16px", flex: 1 }}>
-                  <div style={{ fontSize: 10, color: "#666", letterSpacing: 2, textTransform: "uppercase", marginBottom: 4 }}>DURASI</div>
-                  <div style={{ color: "#C8A96E", fontWeight: "bold" }}>{day.duration}</div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 24 }}>
+                <div style={{ background: "rgba(15, 23, 42, 0.9)", border: "1px solid rgba(148, 163, 184, 0.18)", borderRadius: 16, padding: "12px 14px" }}>
+                  <div style={{ fontSize: 10, color: "#94a3b8", letterSpacing: 2.2, textTransform: "uppercase", marginBottom: 8 }}>Durasi</div>
+                  <div style={{ color: "#fbbf24", fontWeight: 700 }}>{day.duration}</div>
                 </div>
-                <div style={{ background: "#141414", border: "1px solid #222", borderRadius: 6, padding: "10px 16px", flex: 2 }}>
-                  <div style={{ fontSize: 10, color: "#666", letterSpacing: 2, textTransform: "uppercase", marginBottom: 4 }}>TOOL / RESOURCE</div>
-                  <div style={{ color: "#b8b0a0", fontSize: 13 }}>{day.tool}</div>
+                <div style={{ background: "rgba(15, 23, 42, 0.9)", border: "1px solid rgba(148, 163, 184, 0.18)", borderRadius: 16, padding: "12px 14px", gridColumn: "span 2", minWidth: 0 }}>
+                  <div style={{ fontSize: 10, color: "#94a3b8", letterSpacing: 2.2, textTransform: "uppercase", marginBottom: 8 }}>Tool & resource</div>
+                  <div style={{ color: "#dfe7ff", fontSize: 13, lineHeight: 1.6 }}>{day.tool}</div>
                 </div>
               </div>
 
               <div style={{ marginBottom: 24 }}>
-                <div style={{ fontSize: 10, color: "#666", letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>TUGAS HARI INI</div>
-                <div style={{ background: "#0f0f0f", border: "1px solid #1e1e1e", borderRadius: 6, padding: "16px 20px", color: "#d0c8b8", lineHeight: 1.8, fontSize: 14 }}>
+                <div style={{ fontSize: 10, color: "#94a3b8", letterSpacing: 2.2, textTransform: "uppercase", marginBottom: 12 }}>Tugas hari ini</div>
+                <div style={{ background: "rgba(15, 23, 42, 0.72)", border: "1px solid rgba(148, 163, 184, 0.14)", borderRadius: 18, padding: "18px 20px", color: "#dfe7ff", lineHeight: 1.8, fontSize: 15 }}>
                   {day.task}
                 </div>
               </div>
 
               {day.focus && (
                 <div style={{ marginBottom: 24 }}>
-                  <div style={{ fontSize: 10, color: "#666", letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>MENGAPA INI PENTING</div>
-                  <div style={{ borderLeft: `3px solid ${phase.color}`, paddingLeft: 16, color: "#a8a090", lineHeight: 1.7, fontStyle: "italic", fontSize: 13 }}>
+                  <div style={{ fontSize: 10, color: "#94a3b8", letterSpacing: 2.2, textTransform: "uppercase", marginBottom: 12 }}>Kenapa ini penting</div>
+                  <div style={{ borderLeft: `3px solid ${phase.color}`, paddingLeft: 16, color: "#cbd5e1", lineHeight: 1.8, fontSize: 14, background: "rgba(15, 23, 42, 0.65)", borderRadius: 12, padding: "14px 16px 14px 18px" }}>
                     {day.focus}
                   </div>
                 </div>
@@ -204,20 +208,21 @@ export default function PokerPlan() {
 
               <button
                 onClick={() => toggleComplete(day.day)}
-                style={{ width: "100%", padding: "14px", background: isCompleted ? "#1a3a1a" : "#1a1a1a", border: `1px solid ${isCompleted ? "#4a8a4a" : "#333"}`, color: isCompleted ? "#7EC87E" : "#888", borderRadius: 6, cursor: "pointer", fontFamily: "inherit", fontSize: 13, letterSpacing: 1, transition: "all 0.2s" }}>
-                {isCompleted ? "✓ SELESAI — Klik untuk batalkan" : "○ Tandai Selesai"}
+                style={{ width: "100%", padding: "15px 18px", background: isCompleted ? "linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(16, 185, 129, 0.09))" : "rgba(15, 23, 42, 0.9)", border: `1px solid ${isCompleted ? "rgba(34,197,94,0.5)" : "rgba(148,163,184,0.18)"}`, color: isCompleted ? "#86efac" : "#dfe7ff", borderRadius: 14, cursor: "pointer", fontFamily: "inherit", fontSize: 13, letterSpacing: 1.2, fontWeight: 700, transition: "all 0.2s ease", boxShadow: isCompleted ? "0 10px 24px rgba(34,197,94,0.12)" : "none" }}
+              >
+                {isCompleted ? "✓ Selesai — klik untuk batalkan" : "○ Tandai selesai"}
               </button>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
+          <div style={{ display: "flex", gap: 12, marginTop: 18, flexWrap: "wrap" }}>
             {prevDay && (
-              <button onClick={() => setSelectedDay(prevDay)} style={{ flex: 1, padding: "12px", background: "#111", border: "1px solid #222", color: "#666", borderRadius: 6, cursor: "pointer", fontFamily: "inherit", fontSize: 12 }}>
+              <button onClick={() => setSelectedDay(prevDay)} style={{ flex: "1 1 180px", padding: "12px 14px", background: "rgba(15, 23, 42, 0.9)", border: "1px solid rgba(148, 163, 184, 0.18)", color: "#dfe7ff", borderRadius: 14, cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 600 }}>
                 ← Hari {prevDay}
               </button>
             )}
             {nextDay && (
-              <button onClick={() => setSelectedDay(nextDay)} style={{ flex: 1, padding: "12px", background: "#111", border: "1px solid #222", color: "#666", borderRadius: 6, cursor: "pointer", fontFamily: "inherit", fontSize: 12 }}>
+              <button onClick={() => setSelectedDay(nextDay)} style={{ flex: "1 1 180px", padding: "12px 14px", background: "rgba(15, 23, 42, 0.9)", border: "1px solid rgba(148, 163, 184, 0.18)", color: "#dfe7ff", borderRadius: 14, cursor: "pointer", fontFamily: "inherit", fontSize: 12, fontWeight: 600 }}>
                 Hari {nextDay} →
               </button>
             )}
@@ -228,29 +233,41 @@ export default function PokerPlan() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080808", color: "#e8e0d0", fontFamily: "'Georgia', serif" }}>
-      <div style={{ borderBottom: "1px solid #1a1a1a", padding: "32px 24px 24px", background: "linear-gradient(180deg, #0f0a06 0%, #080808 100%)" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <div style={{ fontSize: 10, letterSpacing: 4, color: "#C8A96E", textTransform: "uppercase", marginBottom: 8 }}>Texas Hold'em Mastery Program</div>
-          <h1 style={{ margin: "0 0 4px", fontSize: 28, fontWeight: "normal", color: "#f0e8d8" }}>100 Hari Menguasai Poker</h1>
-          <p style={{ margin: "0 0 24px", color: "#666", fontSize: 13 }}>30–45 menit per hari · Game Theory · Probability · Psychology · Risk Management</p>
-
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-              <span style={{ fontSize: 11, color: "#666" }}>{completedCount} dari 100 hari selesai</span>
-              <span style={{ fontSize: 11, color: "#C8A96E" }}>{progressPct}%</span>
+    <div style={{ minHeight: "100vh", background: "radial-gradient(circle at top, rgba(167,139,250,0.12), transparent 18%), linear-gradient(180deg, #080d16 0%, #05080d 100%)", color: "#edf2ff", fontFamily: "Inter, 'Segoe UI', sans-serif" }}>
+      <div style={{ borderBottom: "1px solid rgba(148, 163, 184, 0.18)", padding: "34px 20px 24px", background: "linear-gradient(180deg, rgba(15, 23, 42, 0.75), rgba(8, 13, 22, 0.4))" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", marginBottom: 16 }}>
+            <div>
+              <div style={{ fontSize: 10, letterSpacing: 4, color: "#fbbf24", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>Texas Hold'em Mastery Program</div>
+              <h1 style={{ margin: 0, fontSize: 38, lineHeight: 1.1, color: "#f8fafc", fontWeight: 700 }}>100 Hari Menguasai Poker</h1>
             </div>
-            <div style={{ height: 3, background: "#1a1a1a", borderRadius: 2 }}>
-              <div style={{ height: "100%", background: "linear-gradient(90deg, #C8A96E, #9B7EC8)", borderRadius: 2, width: `${progressPct}%`, transition: "width 0.5s" }} />
+            <div style={{ background: "rgba(15, 23, 42, 0.8)", border: "1px solid rgba(148, 163, 184, 0.18)", borderRadius: 18, padding: "10px 14px", minWidth: 180 }}>
+              <div style={{ fontSize: 10, letterSpacing: 2.2, textTransform: "uppercase", color: "#94a3b8" }}>Progress</div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 6 }}>
+                <strong style={{ fontSize: 18, color: "#f8fafc" }}>{completedCount}</strong>
+                <span style={{ color: "#fbbf24", fontWeight: 700 }}>{progressPct}%</span>
+              </div>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <p style={{ margin: "0 0 22px", color: "#94a3b8", fontSize: 14, lineHeight: 1.7 }}>30–45 menit per hari · Game Theory · Probability · Psychology · Risk Management</p>
+
+          <div style={{ marginBottom: 18 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, gap: 12, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 11, color: "#cbd5e1" }}>{completedCount} dari 100 hari selesai</span>
+              <span style={{ fontSize: 11, color: "#fbbf24", fontWeight: 700 }}>{progressPct}%</span>
+            </div>
+            <div style={{ height: 8, background: "rgba(148, 163, 184, 0.12)", borderRadius: 999, overflow: "hidden" }}>
+              <div style={{ height: "100%", background: "linear-gradient(90deg, #fbbf24, #a78bfa)", borderRadius: 999, width: `${progressPct}%`, transition: "width 0.45s ease" }} />
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             {phases.map(p => {
               const pDays = allDays.filter(d => d.phase === p.id);
               const pCompleted = pDays.filter(d => completedDays.includes(d.day)).length;
               return (
-                <div key={p.id} style={{ fontSize: 10, color: p.color + "99", background: p.color + "10", border: `1px solid ${p.color}22`, padding: "3px 8px", borderRadius: 20 }}>
+                <div key={p.id} style={{ fontSize: 10, color: p.color, background: `${p.color}14`, border: `1px solid ${p.color}33`, padding: "6px 10px", borderRadius: 999, fontWeight: 700, letterSpacing: 1 }}>
                   Phase {p.id}: {pCompleted}/{pDays.length}
                 </div>
               );
@@ -259,40 +276,42 @@ export default function PokerPlan() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "24px" }}>
-        <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "28px 20px 40px" }}>
+        <div style={{ display: "flex", gap: 10, marginBottom: 18, flexWrap: "wrap" }}>
           <button
             onClick={() => setSelectedPhase(0)}
-            style={{ padding: "8px 16px", background: selectedPhase === 0 ? "#C8A96E" : "#111", border: `1px solid ${selectedPhase === 0 ? "#C8A96E" : "#222"}`, color: selectedPhase === 0 ? "#0a0a0a" : "#666", borderRadius: 4, cursor: "pointer", fontFamily: "inherit", fontSize: 11, letterSpacing: 1 }}>
+            style={{ padding: "10px 18px", background: selectedPhase === 0 ? "#fbbf24" : "rgba(15, 23, 42, 0.8)", border: `1px solid ${selectedPhase === 0 ? "#fbbf24" : "rgba(148, 163, 184, 0.18)"}`, color: selectedPhase === 0 ? "#0b1220" : "#dfe7ff", borderRadius: 999, cursor: "pointer", fontFamily: "inherit", fontSize: 11, letterSpacing: 1.4, fontWeight: 800 }}
+          >
             SEMUA
           </button>
           {phases.map(p => (
             <button
               key={p.id}
               onClick={() => setSelectedPhase(p.id)}
-              style={{ padding: "8px 14px", background: selectedPhase === p.id ? p.color + "20" : "#111", border: `1px solid ${selectedPhase === p.id ? p.color : "#222"}`, color: selectedPhase === p.id ? p.color : "#666", borderRadius: 4, cursor: "pointer", fontFamily: "inherit", fontSize: 11, letterSpacing: 1 }}>
+              style={{ padding: "10px 16px", background: selectedPhase === p.id ? `${p.color}18` : "rgba(15, 23, 42, 0.8)", border: `1px solid ${selectedPhase === p.id ? p.color : "rgba(148, 163, 184, 0.18)"}`, color: selectedPhase === p.id ? p.color : "#dfe7ff", borderRadius: 999, cursor: "pointer", fontFamily: "inherit", fontSize: 11, letterSpacing: 1.2, fontWeight: 700 }}
+            >
               {p.name}
             </button>
           ))}
         </div>
 
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 20, position: "relative" }}>
           <input
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Cari topik atau kategori..."
-            style={{ width: "100%", boxSizing: "border-box", background: "#0f0f0f", border: "1px solid #1e1e1e", color: "#d0c8b8", padding: "10px 14px", borderRadius: 4, fontFamily: "inherit", fontSize: 13, outline: "none" }}
+            style={{ width: "100%", boxSizing: "border-box", background: "rgba(15, 23, 42, 0.85)", border: "1px solid rgba(148, 163, 184, 0.18)", color: "#f8fafc", padding: "14px 16px", borderRadius: 14, fontFamily: "inherit", fontSize: 14, outline: "none", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)" }}
           />
         </div>
 
         {selectedPhase !== 0 && currentPhaseData && (
-          <div style={{ background: currentPhaseData.color + "10", border: `1px solid ${currentPhaseData.color}22`, borderRadius: 6, padding: "12px 16px", marginBottom: 20 }}>
-            <span style={{ color: currentPhaseData.color, fontSize: 11, letterSpacing: 2 }}>HARI {currentPhaseData.days}</span>
-            <span style={{ color: "#666", fontSize: 13, marginLeft: 12 }}>{currentPhaseData.desc}</span>
+          <div style={{ background: `${currentPhaseData.color}12`, border: `1px solid ${currentPhaseData.color}30`, borderRadius: 16, padding: "14px 16px", marginBottom: 20, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+            <span style={{ color: currentPhaseData.color, fontSize: 11, letterSpacing: 2.2, textTransform: "uppercase", fontWeight: 800 }}>Hari {currentPhaseData.days}</span>
+            <span style={{ color: "#cbd5e1", fontSize: 13 }}>{currentPhaseData.desc}</span>
           </div>
         )}
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
           {filteredDays.map(d => {
             const phase = phases.find(p => p.id === d.phase);
             const isCompleted = completedDays.includes(d.day);
@@ -300,26 +319,30 @@ export default function PokerPlan() {
               <div
                 key={d.day}
                 onClick={() => { setSelectedDay(d.day); setView("detail"); }}
-                style={{ background: isCompleted ? "#0d1a0d" : "#0f0f0f", border: `1px solid ${isCompleted ? "#2a4a2a" : "#1a1a1a"}`, borderRadius: 6, padding: "16px", cursor: "pointer", transition: "all 0.15s", position: "relative", overflow: "hidden" }}>
-                <div style={{ position: "absolute", top: 0, left: 0, width: 3, height: "100%", background: phase.color + (isCompleted ? "99" : "44") }} />
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
-                  <div style={{ fontSize: 10, color: phase.color, letterSpacing: 2 }}>HARI {d.day}</div>
+                style={{ background: isCompleted ? "linear-gradient(180deg, rgba(22, 101, 52, 0.18), rgba(15, 23, 42, 0.95))" : "linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(12, 18, 28, 0.96))", border: `1px solid ${isCompleted ? "rgba(34,197,94,0.38)" : "rgba(148,163,184,0.14)"}`, borderRadius: 18, padding: "18px 18px 16px", cursor: "pointer", position: "relative", overflow: "hidden", transition: "transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease", boxShadow: "0 10px 24px rgba(2, 6, 23, 0.18)" }}
+              >
+                <div style={{ position: "absolute", top: 0, left: 0, width: 4, height: "100%", background: phase.color }} />
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12, gap: 10 }}>
+                  <div style={{ fontSize: 10, color: phase.color, letterSpacing: 2.2, fontWeight: 800 }}>HARI {d.day}</div>
                   <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                    {isCompleted && <span style={{ color: "#4a8a4a", fontSize: 12 }}>✓</span>}
-                    <span style={{ fontSize: 9, color: categoryColors[d.category] + "88", background: categoryColors[d.category] + "15", border: `1px solid ${categoryColors[d.category]}25`, padding: "2px 6px", borderRadius: 10 }}>
+                    {isCompleted && <span style={{ color: "#86efac", fontSize: 12 }}>✓</span>}
+                    <span style={{ fontSize: 9, color: categoryColors[d.category], background: `${categoryColors[d.category]}18`, border: `1px solid ${categoryColors[d.category]}33`, padding: "4px 7px", borderRadius: 999, fontWeight: 700 }}>
                       {d.category}
                     </span>
                   </div>
                 </div>
-                <div style={{ fontSize: 14, color: isCompleted ? "#7a9a7a" : "#d0c8b8", marginBottom: 6, lineHeight: 1.3 }}>{d.title}</div>
-                <div style={{ fontSize: 11, color: "#555" }}>{d.duration}</div>
+                <div style={{ fontSize: 15, color: "#f8fafc", marginBottom: 10, lineHeight: 1.45, fontWeight: 600 }}>{d.title}</div>
+                <div style={{ fontSize: 12, color: "#94a3b8", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+                  <span>{d.duration}</span>
+                  <span style={{ color: phase.color, fontWeight: 700 }}>open</span>
+                </div>
               </div>
             );
           })}
         </div>
 
         {filteredDays.length === 0 && (
-          <div style={{ textAlign: "center", padding: "60px 0", color: "#444" }}>Tidak ada hari yang ditemukan.</div>
+          <div style={{ textAlign: "center", padding: "60px 0", color: "#94a3b8", fontSize: 14 }}>Tidak ada hari yang ditemukan.</div>
         )}
       </div>
     </div>
